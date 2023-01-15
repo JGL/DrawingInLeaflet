@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://joeyklee.github.io/geosandbox/boilerplate/index.html -->
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- Via: https://leafletjs.com/examples/mobile/-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Leaflet Drawing</title>
+	<!-- leaflet -->
+	<link rel="stylesheet" href="./js/leaflet/leaflet.css">
+	<script src="./js/leaflet/leaflet.js"></script>
+	<!--  filesaver -->
+	<script type="text/javascript" src="./js/fileSaver/FileSaver.js"></script>
+	<!-- leaflet draw -->
+	<link rel="stylesheet" href="./js/leaflet_draw/leaflet.draw.css">
+	<script type="text/javascript" src="./js/leaflet_draw/leaflet.draw.js"></script>
+	<style type="text/css">
+		html,
+		body {
+			height: 100%;
+		}
+
+		#map {
+			width: 100%;
+			height: 100%;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div id="map"></div>
+	<script type="text/javascript">
+		var map;
+		function initMap() {
+			// initialize map container
+			map = L.map('map')
+			//geolocate, via https://leafletjs.com/examples/quick-start/
+			map.locate({ setView: true, maxZoom: 16 });
+
+			// add the OpenStreetMap tiles, via https://leafletjs.com/examples/quick-start/
+			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			}).addTo(map);
+
+			//disable scroll wheel zoom 
+			map.scrollWheelZoom.disable();
+
+			//set up location error and found callbacks
+			map.on('locationfound', onLocationFound);
+			map.on('locationerror', onLocationError);
+		}
+		initMap();
+
+		// add your things below
+		function onLocationFound(e) {
+			var radius = e.accuracy;
+
+			L.marker(e.latlng).addTo(map)
+				.bindPopup("You are within " + radius + " metres of this point").openPopup();
+
+			L.circle(e.latlng, radius).addTo(map);
+		}
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+
+		// via https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html
+		// and 
+		// https://joeyklee.github.io/geosandbox/hello-drawing-tool.html#section0
+		// Initialise the FeatureGroup to store editable layers
+		var drawnItems = new L.FeatureGroup();
+		map.addLayer(drawnItems);
+
+		// Initialise the draw control and pass it the FeatureGroup of editable layers
+		// customising the toolbar https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#l-draw-toolbar-initialize
+		var drawControl = new L.Control.Draw({
+			draw: {
+				polyline: false,
+				rectangle: false,
+				circle: false,
+				marker: false,
+				circlemarker: false
+			},
+			edit: {
+				featureGroup: drawnItems
+			}
+		});
+		map.addControl(drawControl);
+
+		// and keep the drawn items on the map
+		map.on('draw:created', function (e) {
+			var type = e.layerType,
+				layer = e.layer;
+
+			// via https://github.com/iamtekson/Leaflet-Basic/blob/master/draw/index.html
+			console.log(layer.toGeoJSON())
+
+			drawnItems.addLayer(layer);
+		});
+
+		// function to download items
+		function downloadJson(item, outputName) {
+			var text = JSON.stringify(item.toGeoJSON());
+			var blob = new Blob([text], {
+				type: "text/plain;charset=utf-8"
+			});
+			saveAs(blob, outputName);
+		}
+
+		// when a key is pressed, fire an event
+		map.on("keypress", function (e) {
+			var keyPressed = e.originalEvent.key;
+			console.log("the key pressed is: ", keyPressed);
+
+			if (keyPressed == "S") {
+				downloadJson(drawnItems, "drawnItems.geojson");
+			}
+
+		});
+	</script>
+
+</body>
+
+</html>

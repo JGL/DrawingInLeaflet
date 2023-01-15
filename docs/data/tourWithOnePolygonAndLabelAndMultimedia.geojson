@@ -1,0 +1,47 @@
+{
+   "type":"FeatureCollection",
+   "features":[
+      {
+         "type":"Feature",
+         "properties":{
+            "name": "A first polygon",
+            "multimedia": "https://joelgethinlewis.com/oldrcasite/images/parallel/3dbox.jpg"            
+         },
+         "geometry":{
+            "type":"Polygon",
+            "coordinates":[
+               [
+                  [
+                     0.000494,
+                     51.606691
+                  ],
+                  [
+                     0.002382,
+                     51.607264
+                  ],
+                  [
+                     0.003433,
+                     51.606277
+                  ],
+                  [
+                     0.00294,
+                     51.605624
+                  ],
+                  [
+                     0.00133,
+                     51.605624
+                  ],
+                  [
+                     0.00073,
+                     51.605998
+                  ],
+                  [
+                     0.000494,
+                     51.606691
+                  ]
+               ]
+            ]
+         }
+      }
+   ]
+}
