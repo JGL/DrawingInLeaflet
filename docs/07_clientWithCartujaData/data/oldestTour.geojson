@@ -1,0 +1,68 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "I typed a name! I changed it",
+				"multimedia": "JoelGethinLewis.png"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-0.006781, 51.608969],
+						[-0.003948, 51.610062],
+						[-0.001481, 51.610062],
+						[-0.000966, 51.608943],
+						[-0.000064, 51.60825],
+						[-0.002403, 51.606837],
+						[-0.005043, 51.606157],
+						[-0.006781, 51.608969]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "A first polygon I changed it toooooo",
+				"multimedia": "3dbox.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[0.003498, 51.610448],
+						[0.000365, 51.609262],
+						[-0.000472, 51.611434],
+						[0.003455, 51.611688],
+						[0.004377, 51.609622],
+						[0.003498, 51.610448]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "A second polygon again changed",
+				"multimedia": "JoelGethinLewis.png"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[0.000236, 51.606691],
+						[0.000794, 51.607597],
+						[0.002618, 51.60729],
+						[0.002425, 51.605358],
+						[-0.000365, 51.605451],
+						[-0.00176, 51.605744],
+						[0.000236, 51.606691]
+					]
+				]
+			}
+		}
+	]
+}
