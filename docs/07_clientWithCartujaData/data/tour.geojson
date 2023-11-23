@@ -108,7 +108,7 @@
 			"type": "Feature",
 			"properties": {
 				"name": "The Nasrid palace",
-				"multimedia": "img/image11.jpg"
+				"multimedia": "img/image11small.jpg"
 			},
 			"geometry": {
 				"type": "Polygon",
@@ -127,7 +127,7 @@
 			"type": "Feature",
 			"properties": {
 				"name": "The palace pool",
-				"multimedia": "img/image12.jpg"
+				"multimedia": "img/image12small.jpg"
 			},
 			"geometry": {
 				"type": "Polygon",
