@@ -78,7 +78,7 @@ function setup() {
 		// https://github.com/bmoren/p5.geolocation#watchposition-used-with-a-callback
 		let watchOptions = {
 			enableHighAccuracy: true,
-			timeout: 5000,
+			timeout: 1000,
 			maximumAge: 0,
 		};
 
