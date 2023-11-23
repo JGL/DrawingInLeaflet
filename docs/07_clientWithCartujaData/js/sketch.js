@@ -85,6 +85,7 @@ function setup() {
 		//optional options for watchPosition()
 		watchPosition(positionChanged, watchOptions);
 
+		//https://github.com/bmoren/p5.geolocation
 		locationData = getCurrentPosition();
 		latitude = locationData.latitude;
 		longitude = locationData.longitude;
@@ -102,11 +103,8 @@ function setup() {
 
 function draw() {
 	background(240);
-	text(
-		"Live position (lat,long) is: (" + latitude + ", " + longitude + ")",
-		width / 2,
-		100
-	);
+	text(`Live Lat: ${latitude}`, width / 2, 100);
+	text(`Live Long: ${longitude}`, width / 2, 120);
 
 	for (let index = 0; index < theImagesDisplay.length; index++) {
 		if (theImagesDisplay[index]) {
