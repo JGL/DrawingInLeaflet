@@ -70,7 +70,7 @@ function setup() {
 	textAlign(CENTER, CENTER); //https://p5js.org/reference/#/p5/textAlign
 	frameRate(60);
 
-	console.log(tour);
+	//console.log(tour);
 	if (geoCheck() == true) {
 		//geolocation is available
 		console.log("geolocation available");
@@ -84,6 +84,10 @@ function setup() {
 
 		//optional options for watchPosition()
 		watchPosition(positionChanged, watchOptions);
+
+		locationData = getCurrentPosition();
+		latitude = locationData.latitude;
+		longitude = locationData.longitude;
 
 		let informationTag = document.getElementById("currentLocation");
 		informationTag.innerHTML = `<b>Success!</b> - geolocation found.`;
