@@ -83,7 +83,7 @@ function setup() {
 		let informationTag = document.getElementById("currentLocation");
 		informationTag.innerHTML = `<b>Success!</b> - geolocation found.`;
 	} else {
-		//error getting geolocaion
+		//error getting geolocation
 		console.log("geolocation not available");
 		let informationTag = document.getElementById("currentLocation");
 		informationTag.innerHTML = `<b>Error</b> - geolocation not available, do you have location services enabled?<br/><a href='https://support.apple.com/en-gb/HT207092'>Help for Apple iOS devices</a>.<br/><a href='https://support.google.com/accounts/answer/3467281?hl=en'>Help for Google Android devices</a>.<br/>Geolocation is <b>required</b> to be able to find yourself on the map automatically.`;
