@@ -1,0 +1,184 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Entry to Aynadamar",
+				"multimedia": "img/image01Placeholder.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.6008, 37.192814],
+						[-3.600735, 37.191845],
+						[-3.600542, 37.191836],
+						[-3.600183, 37.192784],
+						[-3.600751, 37.192951],
+						[-3.6008, 37.192814]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "The Carthusian monastery",
+				"multimedia": "img/image02Placeholder.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.599856, 37.192639],
+						[-3.600135, 37.191537],
+						[-3.598756, 37.191482],
+						[-3.599142, 37.192955],
+						[-3.599856, 37.192639]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "An Andalusi house",
+				"multimedia": "img/image03.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.597481, 37.191228],
+						[-3.597646, 37.191499],
+						[-3.597404, 37.19155],
+						[-3.597109, 37.191537],
+						[-3.596879, 37.191353],
+						[-3.596686, 37.191067],
+						[-3.596573, 37.190768],
+						[-3.596251, 37.19058],
+						[-3.596251, 37.190392],
+						[-3.597298, 37.190604],
+						[-3.597481, 37.191228]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Morisco rubbish pit",
+				"multimedia": "img/image06.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.59763, 37.191387],
+						[-3.597365, 37.190612],
+						[-3.598035, 37.190774],
+						[-3.59763, 37.191387]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "The Jesuits in Cartuja",
+				"multimedia": "img/image09.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.597163, 37.193865],
+						[-3.596584, 37.192524],
+						[-3.595264, 37.192741],
+						[-3.595023, 37.192968],
+						[-3.595023, 37.193305],
+						[-3.595382, 37.194253],
+						[-3.597163, 37.193865]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "The Nasrid palace",
+				"multimedia": "img/image11small.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.593811, 37.195074],
+						[-3.593658, 37.194751],
+						[-3.593476, 37.194843],
+						[-3.593744, 37.195183],
+						[-3.593811, 37.195074]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "The palace pool",
+				"multimedia": "img/image12small.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.593696, 37.1952],
+						[-3.593476, 37.194877],
+						[-3.593173, 37.195052],
+						[-3.593366, 37.195328],
+						[-3.593696, 37.1952]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "The view across the Vega of Granada",
+				"multimedia": "img/image14.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.593832, 37.195055],
+						[-3.593763, 37.19495],
+						[-3.593964, 37.194982],
+						[-3.593948, 37.195057],
+						[-3.593832, 37.195055]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "The Jesuit tower",
+				"multimedia": "img/image15.jpg"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-3.59395, 37.195134],
+						[-3.59395, 37.195076],
+						[-3.593883, 37.195078],
+						[-3.593878, 37.195125],
+						[-3.59395, 37.195134]
+					]
+				]
+			}
+		}
+	]
+}
