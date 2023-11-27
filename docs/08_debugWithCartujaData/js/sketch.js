@@ -34,7 +34,7 @@ function preloadImagesFromGeoJSON() {
 		theImagesDisplay.push(false);
 		theImagesText.push(textForImage);
 		theImagesPoly.push(polyForImage);
-		distancesToCentresOfPolys.push(99999);
+		distancesToCentresOfPolys.push(-1);
 	}
 	//debugging
 	//theImagesDisplay[8] = true;
