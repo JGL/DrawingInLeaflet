@@ -120,7 +120,7 @@ function draw() {
 			fill("tomato");
 		}
 		text(
-			`${theImagesText[index]}. You are ${distancesToCentresOfPolys} km away from the centre of this feature.`,
+			`${theImagesText[index]}. You are ${distancesToCentresOfPolys[index]} km away from the centre of this feature.`,
 			width / 2,
 			160 + index * 20
 		);
