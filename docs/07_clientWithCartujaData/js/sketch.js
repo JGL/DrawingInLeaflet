@@ -1,7 +1,5 @@
-let latitude, longitude;
-
-latitude = 0; // latitude is north/south amount
-longitude = 0; // longitude is east/west amount - prime meridian (0) is London, Longitude rewards - https://en.wikipedia.org/wiki/Longitude_rewards
+let latitude = 0; // latitude is north/south amount
+let longitude = 0; // longitude is east/west amount - prime meridian (0) is London, Longitude rewards - https://en.wikipedia.org/wiki/Longitude_rewards
 let firstTimeLiveLocation = true; //boolean state for first time run, hacky
 
 let tour;
@@ -123,6 +121,14 @@ function positionChanged(position) {
 
 	for (let index = 0; index < tour.features.length; index++) {
 		// http://turfjs.org/docs/#booleanPointInPolygon
+		// https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1
+		// A position is an array of numbers.  There MUST be two or more
+		//    elements.  The first two elements are longitude and latitude, or
+		//    easting and northing, precisely in that order and using decimal
+		//    numbers.  Altitude or elevation MAY be included as an optional third
+		//    element
+		// I had the below the wrong way around!
+		var pt = turf.point([position.longitude, position.latitude]);
 		var pt = turf.point([position.latitude, position.longitude]);
 		var poly = turf.polygon(theImagesPoly[index]);
 
