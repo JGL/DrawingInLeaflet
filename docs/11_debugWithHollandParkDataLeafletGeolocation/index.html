@@ -44,13 +44,17 @@
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
 
+		var positionMarker = L.marker(map.getCenter()).addTo(map);
+
 		function onLocationFound(e) {
 			console.log("New Location found...")
 			console.log(e)
 			const radius = e.accuracy / 2;
 
-			const locationMarker = L.marker(e.latlng).addTo(map)
-				.bindPopup(`You are within ${radius} metres of this point`).openPopup();
+			//updating to use postionMarker
+			positionMarker.setLatLng(e.latlng).bindPopup(`You are within ${radius} metres of this point`)
+			// const locationMarker = L.marker(e.latlng).addTo(map)
+			// 	.bindPopup(`You are within ${radius} metres of this point`).openPopup();
 
 			const locationCircle = L.circle(e.latlng, radius).addTo(map);
 		}
@@ -63,13 +67,13 @@
 		map.on('locationerror', onLocationError);
 
 		//https://leafletjs.com/reference.html#locate-options
-		map.locate({ watch: true, setView: true, maxZoom: 16, maximumAge: 0, enableHighAccuracy: true });
-		//map.locate({ watch: true, maxZoom: 16, maximumAge: 0, enableHighAccuracy: true });
+		//map.locate({ watch: true, setView: true, maxZoom: 16, maximumAge: 0, enableHighAccuracy: true });
+		map.locate({ watch: true, maxZoom: 16, maximumAge: 0, enableHighAccuracy: true });
 
 		//https://leafletjs.com/examples/geojson/
 		function onEachFeature(feature, layer) {
 			//just printing out the feature information for now and the layer
-			console.log(feature)
+			//console.log(feature)
 			//console.log(layer)
 			//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals - use ` for the syntactic sugar!
 			if (feature.properties && feature.properties.name) {
