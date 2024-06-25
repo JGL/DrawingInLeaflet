@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Walking Tour Client</title>
+	<link rel="shortcut icon" href="favicon.ico" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<!-- via https://leafletjs.com/examples/mobile/ to disallow user scaling-->
+	<!-- This line removes any default padding and style. you might only need one of these values set. In addition, the lines above in the meta and style below are to stop scrolling and zooming on mobile safari, see: https://discourse.processing.org/t/disable-scrolling-on-mobile/20719/2 -->
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+			user-select: none;
+			touch-action: none;
+			-webkit-user-select: none;
+		}
+
+		canvas {
+			vertical-align: top;
+		}
+
+		html,
+		body,
+		#map {
+			height: 100%;
+			width: 100vw;
+		}
+	</style>
+	<script src="js/turf/turf.min.js"></script>
+	<link rel="stylesheet" href="../css/leaflet.css" />
+	<script src="js/leaflet/leaflet.js"></script>
+</head>
+
+<body>
+	<div id="map"></div>
+	<script>
+		const map = L.map('map').fitWorld();
+
+		const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
+
+		function onLocationFound(e) {
+			console.log("New Location found...")
+			console.log(e)
+			const radius = e.accuracy / 2;
+
+			const locationMarker = L.marker(e.latlng).addTo(map)
+				.bindPopup(`You are within ${radius} metres of this point`).openPopup();
+
+			const locationCircle = L.circle(e.latlng, radius).addTo(map);
+		}
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+
+		//https://leafletjs.com/reference.html#locate-options
+		map.locate({ watch: true, setView: true, maxZoom: 16, maximumAge: 0, enableHighAccuracy: true });
+		//map.locate({ watch: true, maxZoom: 16, maximumAge: 0, enableHighAccuracy: true });
+
+		//https://leafletjs.com/examples/geojson/
+		function onEachFeature(feature, layer) {
+			//just printing out the feature information for now and the layer
+			console.log(feature)
+			//console.log(layer)
+			//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals - use ` for the syntactic sugar!
+			if (feature.properties && feature.properties.name) {
+				layer.bindPopup(`${feature.properties.name}<br/><img src="${feature.properties.multimedia}">`);
+			}
+		}
+
+		//https://gis.stackexchange.com/a/251184
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', 'data/tour.geojson');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.responseType = 'json';
+		xhr.onload = function () {
+			if (xhr.status !== 200) return
+			L.geoJSON(xhr.response, { onEachFeature: onEachFeature }).addTo(map);
+		};
+		xhr.send();
+	</script>
+</body>
+
+</html>
