@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" type="text/css" href="../css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖖🏻</text></svg>" />
+	<title>Tour Editor &amp; Client</title>
+	<style>body { background-color: #EDD1B0; }</style>
+</head>
+
+<body>
+	<h1>Holland Park Tour — Editor &amp; Client</h1>
+	<p>A static, GeoJSON-driven tour builder. The <b>editor</b> creates locations (centre + radius geofences) with a name, text and an image; the <b>client</b> plays the tour back, showing media automatically as a visitor walks into each zone.</p>
+	<ul>
+		<li><a href="editor.html">Editor</a> — draw circular zones, attach name / text / image, import and export <code>tour.geojson</code>.</li>
+		<li><a href="client.html">Client</a> — read-only playback with live geolocation, honest GPS accuracy circle and automatic multimedia.</li>
+	</ul>
+	<p>Workflow: build a tour in the editor, <b>Export GeoJSON</b>, save it as <code>data/tour.geojson</code> in this folder (and commit any new images to <code>img/</code>), then open the client.</p>
+	<p><a href="../index.html">&larr; Back to all experiments</a></p>
+</body>
+
+</html>

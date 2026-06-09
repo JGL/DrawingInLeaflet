@@ -1,0 +1,200 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sun Trap entrance",
+        "multimedia": "img/fig01SunTrap.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2044068,
+          51.5057792
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lord Holland Memorial",
+        "multimedia": "img/fig02LordHollandMemorial.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2033594,
+          51.5041781
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Oak Throne",
+        "multimedia": "img/fig03TheOakThrone.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2033062,
+          51.5041451
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kyoto Garden",
+        "multimedia": "img/fig04KyotoGarden.jpg",
+        "radius": 47
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.204705,
+          51.5030542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fukushima Garden",
+        "multimedia": "img/fig05FukushimaGarden.jpg",
+        "radius": 27
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2042989,
+          51.502828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chess Playground",
+        "multimedia": "img/fig06ChessPlayground.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2042117,
+          51.5020793
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Belvedere",
+        "multimedia": "img/fig07TheBelvedere.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2040884,
+          51.5018798
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Arcade of Orangery",
+        "multimedia": "img/fig08ArcadeOfOrangery.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2040266,
+          51.5016427
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ice House",
+        "multimedia": "img/fig09IceHouse.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2034203,
+          51.5019266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Iris Garden",
+        "multimedia": "img/fig10IrisGarden.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2036759,
+          51.5018502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dutch Garden",
+        "multimedia": "img/fig11DutchGarden.jpg",
+        "radius": 36
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2034448,
+          51.5022473
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Holland Park House",
+        "multimedia": "img/fig12HollandParkHouse.jpg",
+        "radius": 60
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2022223,
+          51.502497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Design Museum",
+        "multimedia": "img/fig13DesignMuseum.jpg",
+        "radius": 97
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2000819,
+          51.5000132
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sun Trap entrance",
+        "text": "A sheltered, sunny corner near the northern edge of the park — a quiet spot to pause before heading into the woodland and gardens.",
+        "multimedia": "img/fig01SunTrap.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2044068,
+          51.5057792
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lord Holland Memorial",
+        "text": "A seated bronze statue of Henry Vassall-Fox, 3rd Baron Holland, begun by G. F. Watts and completed by Joseph Edgar Boehm, unveiled in 1872.",
+        "multimedia": "img/fig02LordHollandMemorial.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2033594,
+          51.5041781
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Oak Throne",
+        "text": "A carved seat among the old oaks of Holland Park, one of several wooden sculptures dotted through the woodland.",
+        "multimedia": "img/fig03TheOakThrone.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2033062,
+          51.5041451
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kyoto Garden",
+        "text": "A Japanese garden given by the Chamber of Commerce of Kyoto and opened in 1991 to mark the Japan Festival, with a tiered waterfall, koi pond and resident peacocks.",
+        "multimedia": "img/fig04KyotoGarden.jpg",
+        "radius": 47
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.204705,
+          51.5030542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fukushima Garden",
+        "text": "Opened in 2012 as a gesture of thanks for British support following the 2011 earthquake and tsunami, this calm garden complements the neighbouring Kyoto Garden.",
+        "multimedia": "img/fig05FukushimaGarden.jpg",
+        "radius": 27
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2042989,
+          51.502828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chess Playground",
+        "text": "An outdoor play and games area in the park, a relaxed place for families and visitors.",
+        "multimedia": "img/fig06ChessPlayground.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2042117,
+          51.5020793
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Belvedere",
+        "text": "A restaurant housed in the former summer ballroom of Holland House, overlooking the formal gardens.",
+        "multimedia": "img/fig07TheBelvedere.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2040884,
+          51.5018798
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Arcade of Orangery",
+        "text": "The arcaded Orangery, once part of the Holland House estate, is now used as an events and exhibition space beside the gardens.",
+        "multimedia": "img/fig08ArcadeOfOrangery.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2040266,
+          51.5016427
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ice House",
+        "text": "A former ice store from the days of Holland House, now a small gallery used for exhibitions.",
+        "multimedia": "img/fig09IceHouse.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2034203,
+          51.5019266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Iris Garden",
+        "text": "A planted garden near the centre of the park, at its best when the irises are in flower in early summer.",
+        "multimedia": "img/fig10IrisGarden.jpg",
+        "radius": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2036759,
+          51.5018502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dutch Garden",
+        "text": "Formal 19th-century flower beds laid out in geometric patterns, famous for their dahlias in late summer.",
+        "multimedia": "img/fig11DutchGarden.jpg",
+        "radius": 36
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2034448,
+          51.5022473
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Holland Park House",
+        "text": "The remains of Holland House, a Jacobean mansion of 1605 largely destroyed by bombing in 1940; the surviving wing now houses a youth hostel and the terrace stages open-air opera each summer.",
+        "multimedia": "img/fig12HollandParkHouse.jpg",
+        "radius": 60
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2022223,
+          51.502497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Design Museum",
+        "text": "The Design Museum moved to its home on the southern edge of Holland Park in 2016, occupying the former Commonwealth Institute building with its distinctive hyperbolic-paraboloid roof.",
+        "multimedia": "img/fig13DesignMuseum.jpg",
+        "radius": 97
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.2000819,
+          51.5000132
+        ]
+      }
+    }
+  ]
+}

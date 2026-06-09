@@ -77,17 +77,16 @@ function setup() {
 		// https://github.com/bmoren/p5.geolocation#watchposition-used-with-a-callback
 		let watchOptions = {
 			enableHighAccuracy: true,
-			timeout: 1000,
+			timeout: 10000, // a first GPS lock can take several seconds; 1s timed out constantly
 			maximumAge: 0,
 		};
 
-		//optional options for watchPosition()
-		watchPosition(positionChanged, watchOptions);
-
-		//https://github.com/bmoren/p5.geolocation
-		locationData = getCurrentPosition();
-		latitude = locationData.latitude;
-		longitude = locationData.longitude;
+		// p5.geolocation's signature is watchPosition(callback, errorCallback, options).
+		// Previously watchOptions was passed as the 2nd arg, so it was treated as the
+		// errorCallback and `options` arrived undefined. That meant enableHighAccuracy
+		// never reached the browser, so the OS served a single coarse network fix that
+		// stayed frozen ~1km away instead of tracking GPS. Pass options as the 3rd arg.
+		watchPosition(positionChanged, positionError, watchOptions);
 
 		let informationTag = document.getElementById("currentLocation");
 		informationTag.innerHTML = `<b>Success!</b> - geolocation found.`;
@@ -123,6 +122,13 @@ function draw() {
 			160 + index * 20
 		);
 	}
+}
+
+function positionError(error) {
+	// error is the GeolocationPositionError forwarded by p5.geolocation.
+	console.log("geolocation watch error: " + error);
+	let informationTag = document.getElementById("currentLocation");
+	informationTag.innerHTML = `<b>Error</b> - lost the location signal (${error}). Trying again...`;
 }
 
 function positionChanged(position) {

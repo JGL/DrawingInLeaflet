@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Holland Park Tour — Editor</title>
+	<link rel="shortcut icon" href="favicon.ico" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="../css/leaflet.css" />
+	<link rel="stylesheet" href="js/geoman/leaflet-geoman.css" />
+	<script src="js/leaflet/leaflet.js"></script>
+	<script src="js/geoman/leaflet-geoman.min.js"></script>
+	<style>
+		html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+		#app { display: flex; height: 100%; }
+		#map { flex: 1 1 auto; height: 100%; }
+		#panel {
+			flex: 0 0 320px; height: 100%; box-sizing: border-box; overflow-y: auto;
+			padding: 14px; background: #f4f1ea; border-left: 2px solid #d8cfbf; font-size: 13px; color: #222;
+		}
+		#panel h1 { font-size: 17px; margin: 0 0 4px; }
+		#panel h2 { font-size: 14px; margin: 16px 0 6px; border-bottom: 1px solid #d8cfbf; padding-bottom: 3px; }
+		#panel p.hint { color: #555; margin: 4px 0 10px; line-height: 1.45; }
+		label { display: block; margin: 8px 0 2px; font-weight: 600; }
+		input, textarea, select { width: 100%; box-sizing: border-box; padding: 6px; border: 1px solid #bbb; border-radius: 5px; font: inherit; }
+		textarea { resize: vertical; min-height: 60px; }
+		button { font: inherit; padding: 7px 10px; border: 0; border-radius: 6px; cursor: pointer; margin: 4px 4px 0 0; }
+		.primary { background: #2e7d32; color: #fff; }
+		.danger { background: #c0392b; color: #fff; }
+		.neutral { background: #d8cfbf; color: #222; }
+		button:disabled { opacity: 0.45; cursor: not-allowed; }
+		#preview { margin-top: 8px; }
+		#preview img { max-width: 100%; border-radius: 5px; display: none; }
+		#selInfo { color: #555; font-style: italic; }
+		.row { display: flex; gap: 8px; }
+		.row > * { flex: 1; }
+		#count { color: #2e7d32; font-weight: 600; }
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div id="map"></div>
+		<div id="panel">
+			<h1>Tour Editor</h1>
+			<p class="hint">Use the toolbar (top-left of the map) to <b>draw a circle</b> for each location, drag to move, or edit its radius. Each circle is saved as a GeoJSON <code>Point</code> + <code>radius</code>. Click a circle to edit its details.</p>
+
+			<h2>Tour data</h2>
+			<div class="row">
+				<button class="neutral" id="importBtn">Import GeoJSON&hellip;</button>
+				<button class="primary" id="exportBtn">Export GeoJSON</button>
+			</div>
+			<input type="file" id="importFile" accept=".geojson,.json,application/geo+json,application/json" style="display:none" />
+			<p class="hint">Zones: <span id="count">0</span></p>
+
+			<h2>Selected location</h2>
+			<p id="selInfo">Nothing selected. Draw a circle or click an existing one.</p>
+			<div id="form" style="display:none">
+				<label for="fName">Name</label>
+				<input id="fName" type="text" placeholder="e.g. Kyoto Garden" />
+
+				<label for="fText">Text</label>
+				<textarea id="fText" placeholder="Description shown to visitors&hellip;"></textarea>
+
+				<label for="fImg">Image file (in img/ folder)</label>
+				<input id="fImg" type="text" list="imgList" placeholder="img/fig04KyotoGarden.jpg" />
+				<datalist id="imgList"></datalist>
+				<div id="preview"><img id="previewImg" alt="preview" /></div>
+
+				<label for="fRadius">Radius (metres)</label>
+				<input id="fRadius" type="number" min="1" step="1" />
+
+				<div style="margin-top:10px">
+					<button class="primary" id="applyBtn">Apply</button>
+					<button class="danger" id="deleteBtn">Delete zone</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const PARK_CENTRE = [51.5025, -0.2035];
+
+		// Images currently committed to img/ — suggestions for the datalist.
+		// Add new filenames here (or just type the path) once you commit more images.
+		const KNOWN_IMAGES = [
+			"img/fig01SunTrap.jpg", "img/fig02LordHollandMemorial.jpg", "img/fig03TheOakThrone.jpg",
+			"img/fig04KyotoGarden.jpg", "img/fig05FukushimaGarden.jpg", "img/fig06ChessPlayground.jpg",
+			"img/fig07TheBelvedere.jpg", "img/fig08ArcadeOfOrangery.jpg", "img/fig09IceHouse.jpg",
+			"img/fig10IrisGarden.jpg", "img/fig11DutchGarden.jpg", "img/fig12HollandParkHouse.jpg",
+			"img/fig13DesignMuseum.jpg"
+		];
+
+		const map = L.map('map').setView(PARK_CENTRE, 16);
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
+
+		// Geoman toolbar: circles only (each circle = one Point+radius zone).
+		map.pm.addControls({
+			position: 'topleft',
+			drawMarker: false, drawCircleMarker: false, drawPolyline: false,
+			drawRectangle: false, drawPolygon: false, drawText: false,
+			drawCircle: true, editMode: true, dragMode: true, removalMode: true,
+			rotateMode: false, cutPolygon: false
+		});
+
+		const zoneLayers = [];
+		let selected = null;
+
+		// ---- datalist ----
+		const imgList = document.getElementById('imgList');
+		KNOWN_IMAGES.forEach(src => { const o = document.createElement('option'); o.value = src; imgList.appendChild(o); });
+
+		// ---- DOM refs ----
+		const els = {
+			count: document.getElementById('count'), selInfo: document.getElementById('selInfo'),
+			form: document.getElementById('form'), name: document.getElementById('fName'),
+			text: document.getElementById('fText'), img: document.getElementById('fImg'),
+			radius: document.getElementById('fRadius'), preview: document.getElementById('previewImg')
+		};
+
+		function updateCount() { els.count.textContent = zoneLayers.length; }
+
+		function registerZone(layer, props) {
+			layer._tourProps = props || { name: '', text: '', multimedia: '' };
+			layer.on('click', () => selectZone(layer));
+			layer.on('pm:edit', () => { if (selected === layer) els.radius.value = Math.round(layer.getRadius()); });
+			refreshTooltip(layer);
+			zoneLayers.push(layer);
+			updateCount();
+		}
+
+		function refreshTooltip(layer) {
+			const name = layer._tourProps.name || 'Untitled';
+			layer.bindTooltip(name, { direction: 'top' });
+		}
+
+		function addCircle(latlng, radius, props) {
+			const layer = L.circle(latlng, { radius, color: '#2e7d32', fillColor: '#2e7d32', fillOpacity: 0.25 }).addTo(map);
+			registerZone(layer, props);
+			return layer;
+		}
+
+		function selectZone(layer) {
+			selected = layer;
+			const p = layer._tourProps;
+			els.selInfo.style.display = 'none';
+			els.form.style.display = 'block';
+			els.name.value = p.name || '';
+			els.text.value = p.text || '';
+			els.img.value = p.multimedia || '';
+			els.radius.value = Math.round(layer.getRadius());
+			updatePreview();
+			zoneLayers.forEach(l => l.setStyle({ color: l === layer ? '#1976d2' : '#2e7d32', fillColor: l === layer ? '#1976d2' : '#2e7d32' }));
+		}
+
+		function clearSelection() {
+			selected = null;
+			els.form.style.display = 'none';
+			els.selInfo.style.display = 'block';
+			zoneLayers.forEach(l => l.setStyle({ color: '#2e7d32', fillColor: '#2e7d32' }));
+		}
+
+		function updatePreview() {
+			const src = els.img.value.trim();
+			if (src) { els.preview.src = encodeURI(src); els.preview.style.display = 'block'; }
+			else { els.preview.style.display = 'none'; }
+		}
+		els.img.addEventListener('input', updatePreview);
+
+		// ---- buttons ----
+		document.getElementById('applyBtn').addEventListener('click', () => {
+			if (!selected) return;
+			selected._tourProps = { name: els.name.value.trim(), text: els.text.value.trim(), multimedia: els.img.value.trim() };
+			const r = Number(els.radius.value);
+			if (r > 0) selected.setRadius(r);
+			refreshTooltip(selected);
+			selected.openTooltip();
+		});
+
+		document.getElementById('deleteBtn').addEventListener('click', () => {
+			if (!selected) return;
+			map.removeLayer(selected);
+			const i = zoneLayers.indexOf(selected);
+			if (i >= 0) zoneLayers.splice(i, 1);
+			clearSelection();
+			updateCount();
+		});
+
+		// New circle drawn via the toolbar.
+		map.on('pm:create', e => {
+			if (e.shape !== 'Circle') return;
+			registerZone(e.layer, { name: '', text: '', multimedia: '' });
+			selectZone(e.layer);
+			els.name.focus();
+		});
+
+		// Keep registry in sync if a zone is removed via the Geoman trash tool.
+		map.on('pm:remove', e => {
+			const i = zoneLayers.indexOf(e.layer);
+			if (i >= 0) zoneLayers.splice(i, 1);
+			if (selected === e.layer) clearSelection();
+			updateCount();
+		});
+
+		// ---- import / export ----
+		document.getElementById('exportBtn').addEventListener('click', () => {
+			const features = zoneLayers.map(layer => {
+				const ll = layer.getLatLng(), p = layer._tourProps;
+				return {
+					type: 'Feature',
+					properties: { name: p.name || '', text: p.text || '', multimedia: p.multimedia || '', radius: Math.round(layer.getRadius()) },
+					geometry: { type: 'Point', coordinates: [Number(ll.lng.toFixed(7)), Number(ll.lat.toFixed(7))] }
+				};
+			});
+			const fc = { type: 'FeatureCollection', features };
+			const blob = new Blob([JSON.stringify(fc, null, 2) + '\n'], { type: 'application/geo+json' });
+			const a = document.createElement('a');
+			a.href = URL.createObjectURL(blob);
+			a.download = 'tour.geojson';
+			a.click();
+			URL.revokeObjectURL(a.href);
+		});
+
+		document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+		document.getElementById('importFile').addEventListener('change', ev => {
+			const file = ev.target.files[0];
+			if (!file) return;
+			const reader = new FileReader();
+			reader.onload = () => {
+				try {
+					const fc = JSON.parse(reader.result);
+					zoneLayers.slice().forEach(l => map.removeLayer(l));
+					zoneLayers.length = 0;
+					clearSelection();
+					(fc.features || []).forEach(f => {
+						if (f.geometry && f.geometry.type === 'Point') {
+							const [lng, lat] = f.geometry.coordinates;
+							const p = f.properties || {};
+							addCircle(L.latLng(lat, lng), Number(p.radius) || 25, { name: p.name || '', text: p.text || '', multimedia: p.multimedia || '' });
+						}
+					});
+					updateCount();
+					if (zoneLayers.length) map.fitBounds(L.featureGroup(zoneLayers).getBounds().pad(0.2));
+				} catch (err) { alert('Could not read GeoJSON: ' + err); }
+			};
+			reader.readAsText(file);
+			ev.target.value = ''; // allow re-importing the same file
+		});
+
+		updateCount();
+	</script>
+</body>
+
+</html>
