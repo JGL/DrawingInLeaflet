@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Holland Park Tour — Client</title>
+	<link rel="shortcut icon" href="favicon.ico" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="../css/leaflet.css" />
+	<script src="js/leaflet/leaflet.js"></script>
+	<style>
+		html, body { height: 100%; width: 100%; padding: 0; margin: 0; }
+		body { font-family: system-ui, -apple-system, sans-serif; user-select: none; -webkit-user-select: none; touch-action: none; }
+		#map { position: absolute; inset: 0; }
+
+		#status {
+			position: absolute; top: 8px; left: 8px; z-index: 1000;
+			max-width: 60vw; padding: 8px 10px; border-radius: 8px;
+			background: rgba(255, 255, 255, 0.92); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+			font-size: 12px; line-height: 1.4; color: #222;
+		}
+		#status b { color: #111; }
+		#status .warn { color: #c0392b; font-weight: bold; }
+		#status .ok { color: #2e7d32; }
+
+		#media {
+			position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 1000;
+			display: none; padding: 10px; border-radius: 10px;
+			background: rgba(255, 255, 255, 0.96); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+			text-align: center; max-height: 55vh; overflow-y: auto;
+		}
+		#media.visible { display: block; }
+		#media h2 { margin: 0 0 6px; font-size: 17px; color: #2e7d32; }
+		#media p { margin: 0 0 8px; font-size: 13px; color: #333; text-align: left; }
+		#media img { max-width: 100%; max-height: 34vh; border-radius: 6px; display: block; margin: 0 auto; }
+	</style>
+</head>
+
+<body>
+	<div id="map"></div>
+	<div id="status">Locating you&hellip; please allow location access.</div>
+	<div id="media"></div>
+
+	<script>
+		// ---- Geofencing tuning (centre + radius, see v12) -----------------------
+		const ACCURACY_CAP = 30;        // metres of GPS slop we let expand a zone by
+		const HYSTERESIS = 15;          // metres you must move back out before a zone closes
+		const WEAK_FIX_ACCURACY = 80;   // metres: above this the fix is too vague to trigger
+		const PARK_CENTRE = [51.5025, -0.2035];
+
+		const map = L.map('map').setView(PARK_CENTRE, 16);
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
+
+		const userDot = L.circleMarker(PARK_CENTRE, {
+			radius: 7, color: '#fff', weight: 2, fillColor: '#1976d2', fillOpacity: 1
+		}).addTo(map);
+		const accuracyCircle = L.circle(PARK_CENTRE, { radius: 0, color: '#1976d2', weight: 1, fillOpacity: 0.12 }).addTo(map);
+
+		const statusEl = document.getElementById('status');
+		const mediaEl = document.getElementById('media');
+
+		let zones = [];
+		let firstFixCentred = false;
+
+		function loadZones(geojson) {
+			(geojson.features || []).forEach(f => {
+				if (!f.geometry || f.geometry.type !== 'Point') return; // client expects Point + radius zones
+				const [lng, lat] = f.geometry.coordinates;
+				const p = f.properties || {};
+				const latlng = L.latLng(lat, lng);
+				const radius = Number(p.radius) || 25;
+				const circle = L.circle(latlng, { radius, color: '#888', weight: 1, fillColor: '#888', fillOpacity: 0.15 })
+					.addTo(map).bindTooltip(p.name || 'Untitled', { direction: 'top' });
+				zones.push({ name: p.name || 'Untitled', text: p.text || '', multimedia: p.multimedia || '', latlng, radius, circle, active: false });
+			});
+		}
+
+		function onLocationFound(e) {
+			const acc = e.accuracy;
+			userDot.setLatLng(e.latlng);
+			accuracyCircle.setLatLng(e.latlng).setRadius(acc);
+			if (!firstFixCentred) { map.setView(e.latlng, 17); firstFixCentred = true; }
+
+			const weak = acc > WEAK_FIX_ACCURACY;
+			const effAcc = Math.min(acc, ACCURACY_CAP);
+
+			let nearest = null, nearestDist = Infinity;
+			const active = [];
+			zones.forEach(z => {
+				const dist = e.latlng.distanceTo(z.latlng);
+				if (dist < nearestDist) { nearestDist = dist; nearest = z; }
+				const enterR = z.radius + effAcc;
+				const exitR = enterR + HYSTERESIS;
+				if (!z.active && !weak && dist <= enterR) z.active = true;
+				else if (z.active && dist > exitR) z.active = false;
+				z.circle.setStyle(z.active
+					? { color: '#2e7d32', fillColor: '#2e7d32', fillOpacity: 0.35 }
+					: { color: '#888', fillColor: '#888', fillOpacity: 0.15 });
+				if (z.active) active.push(z);
+			});
+
+			active.sort((a, b) => e.latlng.distanceTo(a.latlng) - e.latlng.distanceTo(b.latlng));
+			showMedia(active[0] || null);
+
+			statusEl.innerHTML =
+				`<b>Lat:</b> ${e.latlng.lat.toFixed(6)} <b>Lng:</b> ${e.latlng.lng.toFixed(6)}<br/>` +
+				`<b>Accuracy:</b> ${Math.round(acc)} m ` +
+				(weak ? `<span class="warn">(too weak to trigger)</span>` : `<span class="ok">(ok)</span>`) + `<br/>` +
+				`<b>Nearest:</b> ${nearest ? nearest.name : '-'} ${nearest ? '(' + Math.round(nearestDist) + ' m)' : ''}`;
+		}
+
+		function onLocationError(e) {
+			statusEl.innerHTML = `<span class="warn">Location error:</span> ${e.message}.<br/>Geolocation is required to find yourself on the map.`;
+		}
+
+		let shownZone = null;
+		function showMedia(zone) {
+			if (zone === shownZone) return;
+			shownZone = zone;
+			if (!zone) { mediaEl.classList.remove('visible'); mediaEl.innerHTML = ''; return; }
+			let html = `<h2>${escapeHtml(zone.name)}</h2>`;
+			if (zone.text) html += `<p>${escapeHtml(zone.text)}</p>`;
+			if (zone.multimedia) html += `<img src="${encodeURI(zone.multimedia)}" alt="${escapeHtml(zone.name)}">`;
+			mediaEl.innerHTML = html;
+			mediaEl.classList.add('visible');
+		}
+
+		function escapeHtml(s) {
+			return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+		}
+
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+
+		fetch('data/tour.geojson')
+			.then(r => r.json())
+			.then(geojson => {
+				loadZones(geojson);
+				map.locate({ watch: true, enableHighAccuracy: true, maximumAge: 0, timeout: 10000 });
+			})
+			.catch(err => { statusEl.innerHTML = `<span class="warn">Could not load tour data:</span> ${err}`; });
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Holland Park Tour — Editor (GitHub sync)</title>
+	<link rel="shortcut icon" href="favicon.ico" />
+	<link rel="apple-touch-icon" href="favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="../css/leaflet.css" />
+	<link rel="stylesheet" href="js/geoman/leaflet-geoman.css" />
+	<script src="js/leaflet/leaflet.js"></script>
+	<script src="js/geoman/leaflet-geoman.min.js"></script>
+	<style>
+		html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+		#app { display: flex; height: 100%; }
+		#map { flex: 1 1 auto; height: 100%; min-width: 0; }
+		#panel {
+			flex: 0 0 340px; height: 100%; box-sizing: border-box; overflow-y: auto;
+			padding: 14px; background: #f4f1ea; border-left: 2px solid #d8cfbf; font-size: 13px; color: #222;
+		}
+		#panel h1 { font-size: 17px; margin: 0 0 4px; }
+		#panel h2 { font-size: 14px; margin: 16px 0 6px; border-bottom: 1px solid #d8cfbf; padding-bottom: 3px; }
+		#panel p.hint { color: #555; margin: 4px 0 10px; line-height: 1.45; }
+		label { display: block; margin: 8px 0 2px; font-weight: 600; }
+		input, textarea, select { width: 100%; box-sizing: border-box; padding: 6px; border: 1px solid #bbb; border-radius: 5px; font: inherit; }
+		textarea { resize: vertical; min-height: 60px; }
+		button { font: inherit; padding: 7px 10px; border: 0; border-radius: 6px; cursor: pointer; margin: 4px 4px 0 0; }
+		.primary { background: #2e7d32; color: #fff; }
+		.danger { background: #c0392b; color: #fff; }
+		.neutral { background: #d8cfbf; color: #222; }
+		.github { background: #24292f; color: #fff; }
+		button:disabled { opacity: 0.45; cursor: not-allowed; }
+		#preview img { max-width: 100%; border-radius: 5px; display: none; margin-top: 8px; }
+		#selInfo { color: #555; font-style: italic; }
+		.row { display: flex; gap: 8px; }
+		.row > * { flex: 1; }
+		#count { color: #2e7d32; font-weight: 600; }
+		#ghStatus { margin: 6px 0 0; font-size: 12px; line-height: 1.4; min-height: 1.2em; }
+		#ghStatus .ok { color: #2e7d32; font-weight: 600; }
+		#ghStatus .err { color: #c0392b; font-weight: 600; }
+		#ghStatus .busy { color: #555; }
+		details.sec { margin: 6px 0; }
+		details.sec summary { cursor: pointer; color: #444; font-weight: 600; }
+		.tiny { font-size: 11px; color: #666; line-height: 1.4; }
+		code { background: #e7e1d4; padding: 0 3px; border-radius: 3px; }
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div id="map"></div>
+		<div id="panel">
+			<h1>Tour Editor</h1>
+			<p class="hint">Draw a <b>circle</b> per location (toolbar, top-left of the map). Each circle saves as a GeoJSON <code>Point</code> + <code>radius</code>. Click a circle to edit its details. Load and save the tour directly to GitHub below.</p>
+
+			<h2>GitHub sync</h2>
+			<p class="tiny">Repo: <code id="ghRepo"></code> &middot; file: <code id="ghPath"></code></p>
+			<label for="ghToken">Fine-grained access token</label>
+			<input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_… (Contents: read/write, this repo only)" />
+			<div class="row">
+				<button class="neutral" id="ghSaveToken">Remember token</button>
+				<button class="neutral" id="ghForgetToken">Forget token</button>
+			</div>
+			<div class="row" style="margin-top:6px">
+				<button class="github" id="ghLoad">Load from GitHub</button>
+				<button class="primary" id="ghSave">Save to GitHub</button>
+			</div>
+			<p id="ghStatus"></p>
+			<details class="sec">
+				<summary>Who can edit, and token safety</summary>
+				<p class="tiny"><b>Opening this page or having a GitHub account does not let you edit the map.</b> Saving needs a token with <b>write access to this repository</b>, and GitHub only issues such a token to the repo owner or a collaborator with write access (here, <b>Aleks</b>). A token made by anyone else is scoped to their own repos and is rejected when it tries to save here.</p>
+				<p class="tiny">To get a token: GitHub → Settings → Developer settings → <b>Fine-grained personal access tokens</b>, scoped to <b>only this repository</b> with <b>Contents: Read and write</b>, and an expiry. It is stored only in this browser (localStorage) and sent solely to <code>api.github.com</code> — never written into the page or the URL. "Remember token" keeps it on this device; "Forget token" clears it. If it ever leaks, revoke it on GitHub; its only power is editing this one repo.</p>
+			</details>
+
+			<h2>Tour data (file)</h2>
+			<div class="row">
+				<button class="neutral" id="importBtn">Import file&hellip;</button>
+				<button class="neutral" id="exportBtn">Export file</button>
+			</div>
+			<input type="file" id="importFile" accept=".geojson,.json,application/geo+json,application/json" style="display:none" />
+			<p class="hint">Zones: <span id="count">0</span></p>
+
+			<h2>Selected location</h2>
+			<p id="selInfo">Nothing selected. Draw a circle or click an existing one.</p>
+			<div id="form" style="display:none">
+				<label for="fName">Name</label>
+				<input id="fName" type="text" placeholder="e.g. Kyoto Garden" />
+
+				<label for="fText">Text</label>
+				<textarea id="fText" placeholder="Description shown to visitors&hellip;"></textarea>
+
+				<label for="fImg">Image file (in img/ folder)</label>
+				<input id="fImg" type="text" list="imgList" placeholder="img/fig04KyotoGarden.jpg" />
+				<datalist id="imgList"></datalist>
+				<div id="preview"><img id="previewImg" alt="preview" /></div>
+
+				<label for="fRadius">Radius (metres)</label>
+				<input id="fRadius" type="number" min="1" step="1" />
+
+				<div style="margin-top:10px">
+					<button class="primary" id="applyBtn">Apply</button>
+					<button class="danger" id="deleteBtn">Delete zone</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// ---- GitHub target -----------------------------------------------------
+		// The repo and file this editor reads/writes. Edit these if you reuse the
+		// editor for another repo or tour file.
+		const CONFIG = {
+			owner: 'JGL',
+			repo: 'DrawingInLeaflet',
+			branch: 'main',
+			path: 'docs/14_tourEditorGitHubWriteback/data/tour.geojson'
+		};
+		const PARK_CENTRE = [51.5025, -0.2035];
+
+		const KNOWN_IMAGES = [
+			"img/fig01SunTrap.jpg", "img/fig02LordHollandMemorial.jpg", "img/fig03TheOakThrone.jpg",
+			"img/fig04KyotoGarden.jpg", "img/fig05FukushimaGarden.jpg", "img/fig06ChessPlayground.jpg",
+			"img/fig07TheBelvedere.jpg", "img/fig08ArcadeOfOrangery.jpg", "img/fig09IceHouse.jpg",
+			"img/fig10IrisGarden.jpg", "img/fig11DutchGarden.jpg", "img/fig12HollandParkHouse.jpg",
+			"img/fig13DesignMuseum.jpg"
+		];
+
+		const map = L.map('map').setView(PARK_CENTRE, 16);
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
+
+		map.pm.addControls({
+			position: 'topleft',
+			drawMarker: false, drawCircleMarker: false, drawPolyline: false,
+			drawRectangle: false, drawPolygon: false, drawText: false,
+			drawCircle: true, editMode: true, dragMode: true, removalMode: true,
+			rotateMode: false, cutPolygon: false
+		});
+
+		const zoneLayers = [];
+		let selected = null;
+
+		const imgList = document.getElementById('imgList');
+		KNOWN_IMAGES.forEach(src => { const o = document.createElement('option'); o.value = src; imgList.appendChild(o); });
+
+		const els = {
+			count: document.getElementById('count'), selInfo: document.getElementById('selInfo'),
+			form: document.getElementById('form'), name: document.getElementById('fName'),
+			text: document.getElementById('fText'), img: document.getElementById('fImg'),
+			radius: document.getElementById('fRadius'), preview: document.getElementById('previewImg')
+		};
+
+		function updateCount() { els.count.textContent = zoneLayers.length; }
+
+		function registerZone(layer, props) {
+			layer._tourProps = props || { name: '', text: '', multimedia: '' };
+			layer.on('click', () => selectZone(layer));
+			layer.on('pm:edit', () => { if (selected === layer) els.radius.value = Math.round(layer.getRadius()); });
+			refreshTooltip(layer);
+			zoneLayers.push(layer);
+			updateCount();
+		}
+		function refreshTooltip(layer) { layer.bindTooltip(layer._tourProps.name || 'Untitled', { direction: 'top' }); }
+
+		function addCircle(latlng, radius, props) {
+			const layer = L.circle(latlng, { radius, color: '#2e7d32', fillColor: '#2e7d32', fillOpacity: 0.25 }).addTo(map);
+			registerZone(layer, props);
+			return layer;
+		}
+
+		function selectZone(layer) {
+			selected = layer;
+			const p = layer._tourProps;
+			els.selInfo.style.display = 'none';
+			els.form.style.display = 'block';
+			els.name.value = p.name || ''; els.text.value = p.text || ''; els.img.value = p.multimedia || '';
+			els.radius.value = Math.round(layer.getRadius());
+			updatePreview();
+			zoneLayers.forEach(l => l.setStyle({ color: l === layer ? '#1976d2' : '#2e7d32', fillColor: l === layer ? '#1976d2' : '#2e7d32' }));
+		}
+		function clearSelection() {
+			selected = null;
+			els.form.style.display = 'none'; els.selInfo.style.display = 'block';
+			zoneLayers.forEach(l => l.setStyle({ color: '#2e7d32', fillColor: '#2e7d32' }));
+		}
+		function updatePreview() {
+			const src = els.img.value.trim();
+			if (src) { els.preview.src = encodeURI(src); els.preview.style.display = 'block'; }
+			else { els.preview.style.display = 'none'; }
+		}
+		els.img.addEventListener('input', updatePreview);
+
+		document.getElementById('applyBtn').addEventListener('click', () => {
+			if (!selected) return;
+			selected._tourProps = { name: els.name.value.trim(), text: els.text.value.trim(), multimedia: els.img.value.trim() };
+			const r = Number(els.radius.value);
+			if (r > 0) selected.setRadius(r);
+			refreshTooltip(selected); selected.openTooltip();
+		});
+		document.getElementById('deleteBtn').addEventListener('click', () => {
+			if (!selected) return;
+			map.removeLayer(selected);
+			const i = zoneLayers.indexOf(selected); if (i >= 0) zoneLayers.splice(i, 1);
+			clearSelection(); updateCount();
+		});
+
+		map.on('pm:create', e => {
+			if (e.shape !== 'Circle') return;
+			registerZone(e.layer, { name: '', text: '', multimedia: '' });
+			selectZone(e.layer); els.name.focus();
+		});
+		map.on('pm:remove', e => {
+			const i = zoneLayers.indexOf(e.layer); if (i >= 0) zoneLayers.splice(i, 1);
+			if (selected === e.layer) clearSelection();
+			updateCount();
+		});
+
+		// ---- (de)serialise ------------------------------------------------------
+		function buildFeatureCollection() {
+			return {
+				type: 'FeatureCollection',
+				features: zoneLayers.map(layer => {
+					const ll = layer.getLatLng(), p = layer._tourProps;
+					return {
+						type: 'Feature',
+						properties: { name: p.name || '', text: p.text || '', multimedia: p.multimedia || '', radius: Math.round(layer.getRadius()) },
+						geometry: { type: 'Point', coordinates: [Number(ll.lng.toFixed(7)), Number(ll.lat.toFixed(7))] }
+					};
+				})
+			};
+		}
+		function loadFeatureCollection(fc) {
+			zoneLayers.slice().forEach(l => map.removeLayer(l));
+			zoneLayers.length = 0; clearSelection();
+			(fc.features || []).forEach(f => {
+				if (f.geometry && f.geometry.type === 'Point') {
+					const [lng, lat] = f.geometry.coordinates; const p = f.properties || {};
+					addCircle(L.latLng(lat, lng), Number(p.radius) || 25, { name: p.name || '', text: p.text || '', multimedia: p.multimedia || '' });
+				}
+			});
+			updateCount();
+			if (zoneLayers.length) map.fitBounds(L.featureGroup(zoneLayers).getBounds().pad(0.2));
+		}
+
+		// ---- file import / export ----------------------------------------------
+		document.getElementById('exportBtn').addEventListener('click', () => {
+			const blob = new Blob([JSON.stringify(buildFeatureCollection(), null, 2) + '\n'], { type: 'application/geo+json' });
+			const a = document.createElement('a');
+			a.href = URL.createObjectURL(blob); a.download = 'tour.geojson'; a.click();
+			URL.revokeObjectURL(a.href);
+		});
+		document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+		document.getElementById('importFile').addEventListener('change', ev => {
+			const file = ev.target.files[0]; if (!file) return;
+			const reader = new FileReader();
+			reader.onload = () => { try { loadFeatureCollection(JSON.parse(reader.result)); } catch (err) { alert('Could not read GeoJSON: ' + err); } };
+			reader.readAsText(file); ev.target.value = '';
+		});
+
+		// ---- GitHub Contents API -----------------------------------------------
+		const TOKEN_KEY = 'tourEditorGithubToken';
+		let currentSha = null; // sha of tour.geojson as last seen on GitHub (needed to update it)
+
+		const ghEls = {
+			token: document.getElementById('ghToken'), status: document.getElementById('ghStatus'),
+			load: document.getElementById('ghLoad'), save: document.getElementById('ghSave')
+		};
+		document.getElementById('ghRepo').textContent = `${CONFIG.owner}/${CONFIG.repo}@${CONFIG.branch}`;
+		document.getElementById('ghPath').textContent = CONFIG.path;
+		ghEls.token.value = localStorage.getItem(TOKEN_KEY) || '';
+
+		function ghStatus(msg, cls) { ghEls.status.innerHTML = cls ? `<span class="${cls}">${msg}</span>` : msg; }
+		function utf8ToBase64(str) {
+			const bytes = new TextEncoder().encode(str); let bin = '';
+			bytes.forEach(b => bin += String.fromCharCode(b)); return btoa(bin);
+		}
+		function base64ToUtf8(b64) {
+			const bin = atob((b64 || '').replace(/\s/g, ''));
+			return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+		}
+		function apiUrl() {
+			return `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`;
+		}
+		function authHeaders() {
+			const t = ghEls.token.value.trim();
+			const h = { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+			if (t) h['Authorization'] = 'Bearer ' + t;
+			return h;
+		}
+
+		document.getElementById('ghSaveToken').addEventListener('click', () => {
+			localStorage.setItem(TOKEN_KEY, ghEls.token.value.trim());
+			ghStatus('Token remembered on this device.', 'ok');
+		});
+		document.getElementById('ghForgetToken').addEventListener('click', () => {
+			localStorage.removeItem(TOKEN_KEY); ghEls.token.value = '';
+			ghStatus('Token cleared from this device.', 'ok');
+		});
+
+		async function ghGetFile() {
+			const res = await fetch(`${apiUrl()}?ref=${encodeURIComponent(CONFIG.branch)}`, { headers: authHeaders(), cache: 'no-store' });
+			if (res.status === 404) return null; // file does not exist yet
+			if (!res.ok) throw new Error(`GitHub ${res.status}: ${(await res.json().catch(() => ({}))).message || res.statusText}`);
+			return res.json();
+		}
+
+		ghEls.load.addEventListener('click', async () => {
+			ghEls.load.disabled = true;
+			ghStatus('Loading from GitHub…', 'busy');
+			try {
+				const file = await ghGetFile();
+				if (!file) { ghStatus('No tour.geojson on GitHub yet — draw zones and Save to create it.', 'busy'); currentSha = null; ghEls.load.disabled = false; return; }
+				currentSha = file.sha;
+				loadFeatureCollection(JSON.parse(base64ToUtf8(file.content)));
+				ghStatus(`Loaded ${zoneLayers.length} zones from GitHub.`, 'ok');
+			} catch (err) {
+				ghStatus('Load failed — ' + err.message, 'err');
+			}
+			ghEls.load.disabled = false;
+		});
+
+		ghEls.save.addEventListener('click', async () => {
+			if (!ghEls.token.value.trim()) { ghStatus('Enter a token first (needs Contents: write).', 'err'); return; }
+			ghEls.save.disabled = true;
+			ghStatus('Saving to GitHub…', 'busy');
+			try {
+				// Always re-read the current sha just before writing, to avoid stale-sha conflicts.
+				const existing = await ghGetFile();
+				currentSha = existing ? existing.sha : null;
+				const content = JSON.stringify(buildFeatureCollection(), null, 2) + '\n';
+				const body = {
+					message: `Update tour.geojson via editor (${zoneLayers.length} zones)`,
+					content: utf8ToBase64(content),
+					branch: CONFIG.branch
+				};
+				if (currentSha) body.sha = currentSha;
+				const res = await fetch(apiUrl(), { method: 'PUT', headers: authHeaders(), body: JSON.stringify(body) });
+				const data = await res.json().catch(() => ({}));
+				if (!res.ok) throw new Error(`GitHub ${res.status}: ${data.message || res.statusText}`);
+				currentSha = data.content && data.content.sha;
+				ghStatus(`Saved ✓ committed ${zoneLayers.length} zones. Live on the site in ~1 min.`, 'ok');
+			} catch (err) {
+				ghStatus('Save failed — ' + err.message, 'err');
+			}
+			ghEls.save.disabled = false;
+		});
+
+		updateCount();
+	</script>
+</body>
+
+</html>

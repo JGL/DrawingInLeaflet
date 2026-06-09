@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" type="text/css" href="../css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖖🏻</text></svg>" />
+	<title>Tour Editor &amp; Client — GitHub sync</title>
+	<style>body { background-color: #EDD1B0; }</style>
+</head>
+
+<body>
+	<h1>Holland Park Tour — Editor &amp; Client (GitHub sync)</h1>
+	<p>Like the previous editor, but the <b>editor saves the tour straight back to this GitHub repository</b> using the GitHub API — so edits are persistent and published, with no server to run. It works on mobile too, including Safari on iOS, because saving is just a web request to GitHub. The data stays a single <code>tour.geojson</code> file in the repo.</p>
+	<ul>
+		<li><a href="editor.html">Editor</a> — draw circular zones, attach name / text / image, and <b>Load / Save directly to GitHub</b> with a fine-grained access token.</li>
+		<li><a href="client.html">Client</a> — read-only playback with live geolocation, honest GPS accuracy circle and automatic multimedia.</li>
+	</ul>
+	<p><b>How saving works:</b> in the editor, paste a <b>fine-grained Personal Access Token</b> scoped to this repository with <code>Contents: Read and write</code>, then use <b>Load from GitHub</b> / <b>Save to GitHub</b>. The token is stored only in your browser and sent only to <code>api.github.com</code>. After a save, GitHub Pages republishes the live tour within about a minute.</p>
+	<p><a href="../index.html">&larr; Back to all experiments</a></p>
+</body>
+
+</html>
