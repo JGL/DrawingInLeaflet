@@ -1,0 +1,197 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Parliament Hill Viewpoint",
+        "multimedia": "img/1.jpg",
+        "radius": 25,
+        "description": "At 98 metres, Parliament Hill is one of London's highest natural points, with sweeping views towards St Paul's, The Shard and the Palace of Westminster. Its name is linked to the English Civil War, when the hill was used as a lookout by Parliamentarian forces."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1594444,
+          51.5569444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stone of Free Speech",
+        "multimedia": "img/2.jpg",
+        "radius": 25,
+        "description": "Its origins are murky, but it is thought to mark a spot that was the focus of religious and/or political gatherings in the late 18th and early 19th centuries. It is apparently today where some modern pagans gather to celebrate the Spring Equinox."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1672222,
+          51.5575
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Boudicca's Mound",
+        "multimedia": "img/3.jpg",
+        "radius": 25,
+        "description": "Local legend says Queen Boudicca was buried here after her defeat by the Romans. Archaeologists, however, believe this ancient mound is more likely to be an early Bronze Age burial monument."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1675,
+          51.5616667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Highgate Ponds",
+        "multimedia": "img/4.jpg",
+        "radius": 25,
+        "description": "These ponds began as reservoirs created to supply London's growing population with water. Today they form a rich wetland habitat, supporting birds including herons, great crested grebes and cormorants, alongside frogs, toads, fish and dragonflies."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.175,
+          51.5602778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Goodison's Fountain",
+        "multimedia": "img/5.jpg",
+        "radius": 25,
+        "description": "Erected in 1929 in memory of Henry Edmund Goodison of Highgate, honorary treasurer of the Ken Wood Preservation council, it is the only surviving, operating spring of the Hampstead ‘chalybeate’, iron-rich water. It was this water that led to the village of Hampstead becoming a place for the upper classes to visit and stay as a spa escape from the 17th century onwards. Like many of the Heath's smaller landmarks, it reflects the Victorian tradition of providing public amenities and improving access to clean drinking water."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1669444,
+          51.5605556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hampstead Mixed Bathing Pond",
+        "multimedia": "img/6.jpg",
+        "radius": 25,
+        "description": "Hampstead Heath is famous for its natural bathing ponds, where Londoners have swum for generations. The ponds are part of the Heath's remarkable combination of wild landscape and public recreation."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1811111,
+          51.5627778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Whitestone Pond",
+        "multimedia": "img/7.jpg",
+        "radius": 25,
+        "description": "Once known as the Horse Pond, this small body of water is one of the Heath's most recognisable landmarks. Its name is associated with a historic waymarker stone, and its exposed position makes it a distinctive gateway to the open Heath."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1666667,
+          51.5638889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hill Garden & Pergola",
+        "multimedia": "img/8.jpg",
+        "radius": 25,
+        "description": "Built in the early 20th century for Lord Leverhulme, the Pergola is an extraordinary Edwardian garden structure overlooking West Heath. Its columns, terraces and climbing plants create a striking contrast with the wild landscape beyond."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.195,
+          51.5647222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vale of Health",
+        "multimedia": "img/9.jpg",
+        "radius": 25,
+        "description": "This secluded settlement sits within the Heath and has long been one of its most unusual corners. Its name is thought to have originated as a humorous contrast with the area's former reputation for marshy, unhealthy ground."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1888889,
+          51.5611111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kenwood House",
+        "multimedia": "img/10.jpg",
+        "radius": 25,
+        "description": "The present house, built in the late 17th century, was remodelled in the 18th century for William Murray, 1st Earl of Mansfield by Scottish architect Robert Adam, serving as a residence for the Earls of Mansfield until the 20th century. The house and part of the grounds were bought from the 6th Earl of Mansfield in 1925 by Edward Guinness, 1st Earl of Iveagh, and donated to the nation in 1927. The entire estate came under ownership of the London County Council and was open to the public by the end of the 1920s."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1830556,
+          51.5669444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Sham Bridge",
+        "multimedia": "img/11.jpg",
+        "radius": 25,
+        "description": "This picturesque stone bridge is a classic example of the 18th-century taste for romantic landscape design, creating the impression of a much older structure within the grounds of Kenwood House. It dates from 1781 and is a totally fake, two-dimensional bridge. It was erected on the ‘Thousand Pound Pond’ simply to look attractive when looking down the hill from Kenwood House. Humphry Repton redesigned the grounds in the 1790s and suggested it be removed, but his suggestion was not taken."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1811111,
+          51.5677778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Spaniard's Inn",
+        "multimedia": "img/12.jpg",
+        "radius": 25,
+        "description": "Dating from the 16th century, the Spaniards Inn is one of London's oldest pubs and stands beside the historic road between Hampstead and Highgate. Its colourful history includes associations with highwaymen, smugglers and the poet John Keats, who is said to have written Ode to a Nightingale nearby."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1827778,
+          51.5711111
+        ]
+      }
+    }
+  ]
+}
