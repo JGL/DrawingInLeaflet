@@ -55,7 +55,7 @@
 		const HYSTERESIS = 15;          // metres you must move back out before a zone closes
 		const WEAK_FIX_ACCURACY = 80;   // metres: above this the fix is too vague to trust for triggering
 
-		const PARK_CENTRE = [51.564, -0.1772];
+		const PARK_CENTRE = [51.564, -0.1699];
 
 		// ---- Map ----------------------------------------------------------------
 		const map = L.map('map').setView(PARK_CENTRE, 15);
@@ -76,6 +76,7 @@
 		// ---- Zones --------------------------------------------------------------
 		let zones = [];          // { name, multimedia, latlng, radius, circle, active }
 		let firstFixCentred = false;
+		let lastFixAt = null;    // when the most recent GPS fix arrived
 
 		function loadZones(geojson) {
 			geojson.features.forEach(f => {
@@ -91,6 +92,7 @@
 
 		// ---- Location updates ---------------------------------------------------
 		function onLocationFound(e) {
+			lastFixAt = Date.now();
 			const acc = e.accuracy;            // metres; in Leaflet this is already the radius
 			userDot.setLatLng(e.latlng);
 			accuracyCircle.setLatLng(e.latlng).setRadius(acc);
@@ -130,8 +132,16 @@
 				`<b>Accuracy:</b> ${Math.round(acc)} m ` +
 				(weak ? `<span class="warn">(too weak to trigger)</span>` : `<span class="ok">(ok)</span>`) + `<br/>` +
 				`<b>Nearest:</b> ${nearest ? nearest.name : '-'} ` +
-				`${nearest ? '(' + Math.round(nearestDist) + ' m)' : ''}`;
+				`${nearest ? '(' + Math.round(nearestDist) + ' m)' : ''}<br/>` +
+				`<b>Last fix:</b> <span id="fixage"></span> ago`;
 		}
+
+		// The browser already delivers fixes as fast as the phone's GPS provides them
+		// (watch: true, maximumAge: 0) — this readout makes that cadence visible.
+		setInterval(() => {
+			const el = document.getElementById('fixage');
+			if (el && lastFixAt) el.textContent = ((Date.now() - lastFixAt) / 1000).toFixed(1) + ' s';
+		}, 250);
 
 		function onLocationError(e) {
 			statusEl.innerHTML = `<span class="warn">Location error:</span> ${e.message}.<br/>` +
