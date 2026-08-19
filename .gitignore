@@ -132,3 +132,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Claude Code: local settings are per-machine, launch.json is shared
+.claude/settings.local.json
