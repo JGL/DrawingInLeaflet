@@ -48,3 +48,5 @@ The most complete example is the [Hampstead Heath tour](https://jgl.github.io/Dr
    Geolocation only works on secure (HTTPS) pages, which GitHub Pages provides — opening the files straight from disk won't work. For local testing, run a simple server (`python3 -m http.server 8123 --directory docs`) and open `http://localhost:8123/16_myTown/` — browsers treat `localhost` as secure.
 
 If you'd rather draw your stops on a map than type coordinates, experiment [13](https://jgl.github.io/DrawingInLeaflet/13_tourEditorAndClient/) is a visual editor that exports `tour.geojson` files, and experiment [14](https://jgl.github.io/DrawingInLeaflet/14_tourEditorGitHubWriteback/) can even save them straight back to a GitHub repository.
+
+If a stop needs **several photos or several pieces of text**, copy the [Cartuja tour](https://jgl.github.io/DrawingInLeaflet/16_cartujaTourCentreRadius/) (`docs/16_cartujaTourCentreRadius/`) instead: its `tour.geojson` uses `"images": ["img/4a.jpg", "img/4b.jpg"]` and `"descriptions": ["First text…", "Second text…"]` arrays (plus an `"imagesNote"` used as the photos' alt text), and the media card shows ‹ › buttons to cycle through them.

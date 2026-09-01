@@ -33,3 +33,22 @@ A running log of the prompts given to Claude Code and the changes that resulted,
 - Updated `docs/15_12_hampsteadHeathTourCentreRadius/data/tour.geojson` with the tester's corrected coordinates for Kenwood House, The Sham Bridge, Hill Garden & Pergola, Vale of Health, Whitestone Pond, Highgate Ponds and the Mixed Bathing Pond (the geojson is now the source of truth; the spreadsheet in `sourceData/` retains the researcher's original, incorrect values). Re-centred `PARK_CENTRE` to `[51.564, -0.1699]` for the corrected spread.
 - Refresh rate: the page already requests the fastest updates the Geolocation API allows (`watch: true`, `maximumAge: 0`, `enableHighAccuracy: true`); the delivery rate (~1/second) is set by the phone's OS and cannot be increased from JavaScript. Added a "Last fix: X.X s ago" readout to the status panel (updated 4×/second) so the actual GPS cadence is visible in the field.
 - Added a "Make your own walking tour" section to `README.md`: clone/fork, copy the v15 folder, add images, edit `tour.geojson` (documented the feature format, `[lng, lat]` ordering, radius behaviour), set `PARK_CENTRE`, publish via GitHub Pages `/docs`, plus local-testing and HTTPS notes and pointers to the v13/v14 editors.
+
+## 2026-09-01 — v16: Cartuja (Granada) tour with cycling images and texts
+
+**Prompt:** New tour from collaborator Aleks Pluskowski (University of Reading): the Spanish spreadsheet for Cartuja, Granada (`Tour of Cartuja.xlsx` + images in `2026_09_01_spanishDataAndContent/`, some webp needing conversion). Each stop has 2–3 pieces of information — asked for a way to cycle through them (Hampstead only ever showed one). A map of the original polygons was supplied to size the new circles; spreadsheet coordinates are points.
+
+**Changes:**
+
+- Scaffolded `docs/16_cartujaTourCentreRadius/` from v15. `sourceData/` holds the spreadsheet and Aleks's polygon map. Images converted to jpg with `sips` (webp/png sources; anything over 1600 px downscaled — 8.jpg was 10 MB/5464 px, now 528 KB), named `1.jpg`–`9.jpg` with letter suffixes where a stop has several (`4a`–`4d`, `7a`–`7b`).
+- **New geojson schema (v16):** `multimedia`/`description` replaced by arrays `images` and `descriptions`, plus `imagesNote` (the sheet's "Images" column, used as alt text). The v13/v14 editors don't know this schema.
+- **Client additions over v15:** the media card cycles — image pager (‹ › overlay buttons, tap photo to advance, "n/m" badge) and independent text pager ("n of m"); controls only render when there's more than one. Indices reset when the shown stop changes. Nearest-active-zone display unchanged from v15 and now matters: stops 6–9 are within ~40 m of each other (8 and 9 only ~9 m apart).
+- DMS coordinates from the sheet converted to decimal. Radii estimated from the polygon map (map scale calibrated against inter-stop distances): 30 m (1), 55 m (2, monastery precinct), 15 m (3, 4), 60 m (5, Colegio Máximo), 12 m (6), 10 m (7–9, the tight palace cluster).
+- Added v16 to `docs/index.html`; README notes the array-based format for multi-image/text tours.
+- Verified in the browser by simulating `locationfound` events: cycling + wrap-around, nearest-wins in the 8/9 overlap, no nav buttons on single-media stops, card hides on exit.
+
+**Caveats / open questions:**
+
+- Radii for stops 6–9 are deliberately small, but GPS slop (`ACCURACY_CAP` 30 m) still makes them overlap in practice; the nearest stop wins, so walking the cluster should feel right, but worth a field test.
+- Stop 1's title in the sheet is "Entry to Aynadamar / Cartuja"; stop 4's sheet title had quotation marks ("Morisco rubbish pit") which were stripped.
+- Coordinates plotted exactly as given — they all look plausible on the Cartuja campus (unlike the original Hampstead sheet), but a field test will confirm.

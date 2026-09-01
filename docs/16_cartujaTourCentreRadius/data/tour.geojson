@@ -1,0 +1,212 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Entry to Aynadamar / Cartuja",
+        "images": [
+          "img/1.jpg"
+        ],
+        "imagesNote": "Reconstruction of the area dating to the Nasrid Period",
+        "radius": 30,
+        "descriptions": [
+          "The Cartuja campus of the University of Granada has human occupation dating back as far back as the Neolithic. During the Roman period the area was used for industry, including ceramic production as evident from the discovery of a pottery kiln, after which there was a small early medieval hamlet and a cemetery that was abandoned in the 9th century.",
+          "During the Nasrid period (c. 1232-1492), houses and vegetable gardens were constructed here. The area became known as the ‘Estate of Aynadamar’, after the acequia (watercourse) built in the 11th century to supply the urban communities of Granada and the Albaicín.",
+          "In the 1970s, this area was acquired by the University of Granada and became its Cartuja campus."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.6002917,
+          37.1899694
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Carthusian monastery",
+        "images": [
+          "img/2.jpg"
+        ],
+        "imagesNote": "Reconstruction of the area after the Castilian conquest",
+        "radius": 55,
+        "descriptions": [
+          "The landscape changed radically after the Castilian conquest in 1492. The area was progressively acquired by Christian migrants, Italian merchants and, especially, the Carthusian Order, which built a church and a monastery and enclosed all their properties in the area, which began to be known as Cercado de Cartuja.",
+          "The first monastery here, the so-called Cartuja Vieja, was built between 1513 and 1515. But then, the Carthusians decided to relocate the monastery a few hundred metres to the west, where in 1519 they began work on the Monastery of the Assumption, which is still standing. The unfinished monastery was dismantled, and the land was turned over for cultivation."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.59995,
+          37.1919306
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "An Andalusi house",
+        "images": [
+          "img/3.jpg"
+        ],
+        "imagesNote": "Map of excavation area",
+        "radius": 15,
+        "descriptions": [
+          "The redevelopment of the university campus of Cartuja included archaeological investigations of areas where new roads were to be constructed. This took place in 2013-2015. In this area, archaeologists discovered an Andalusi house that was occupied from the 13th to mid-16th c. The house consisted of at least one room, an open courtyard paved with bricks and another small room with a hearth.",
+          "Records after the Castilian conquest indicate the most common properties here were cármenes - a type of suburban property owned by artisans and merchants living in the city. Cármenes were small plots of land used for both irrigated and dry-land agriculture, and sometimes included a house, a cistern and a waterwheel. They were often planted with vines from which the name derives: karm in Arabic (pl. kurūm), meaning ‘house with vines’. There were also almunias - large properties owned by the Nasrid elite which served both recreational and economic roles.",
+          "Some of these owners and their descendants continued holding property in Aynadamar after the conquest, but they gradually sold it to new landowners, especially the Carthusians. Mudéjares (Muslims under Christian rule) and, later, Moriscos (former Muslims forced to convert to Catholicism) inhabited and exploited some of these cármenes, as indicated by Christian documents dated to the 16th century. For example, in 1516, the Carthusians bought ‘a vine and a haça of land and all that is contained in eight marjales, more or less, in the estate of Aynadamar’ from a Françisco Ximenez (formerly known by the Muslim name Abulcaçin Mofadaen)."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5975833,
+          37.1910917
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Morisco rubbish pit",
+        "images": [
+          "img/4a.jpg",
+          "img/4b.jpg",
+          "img/4c.jpg",
+          "img/4d.jpg"
+        ],
+        "imagesNote": "Images of well, animal bones diagram, ataifores",
+        "radius": 15,
+        "descriptions": [
+          "A few metres to the west of this house was a well. This was cut and used in the Nasrid period, but at some point between 1519-1550 it was sealed and used as a rubbish dump. An architectural fragment, most probably from the first Carthusian monastery, was used to seal the well after which it became filled with soil, pottery, rubble and animal bones.",
+          "The animal bones largely consisted of adult sheep and some cattle, and the meat had been jointed by professional butchers. This would have been acquired from new centralised markets established by the Castilian regime. The ceramics found with the bones were late Nasrid in style, and they include ataifores - large bowls designed for communal eating. As such, this waste has been interpreted as evidence for a nearby Morisco household.",
+          "Although local Muslims were forced to convert to Christianity from 1502 onwards, here they clung to their former customs and lifestyles for at least a few decades. Communal eating was eventually forbidden by law - the 1554 synod of Guadix banned Moriscos ‘from eating in ataifor’."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5977833,
+          37.1908972
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Jesuits in Cartuja",
+        "images": [
+          "img/5.jpg"
+        ],
+        "imagesNote": "Colegio Máximo",
+        "radius": 60,
+        "descriptions": [
+          "The Jesuits constructed the seminary known as Colegio Máximo de Cartuja in 1891-1894. It is an example of neo-Mudejar architecture, demonstrating the continued influence of Andalusi heritage in Granada. The main facade was modified between 1916 and 1917 with a sculptural allegory of the Eucharist. In 1970 the building was acquired by the University of Granada."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5966,
+          37.1932778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Nasrid palace",
+        "images": [
+          "img/6.jpg"
+        ],
+        "imagesNote": "Plan of palace excavations",
+        "radius": 12,
+        "descriptions": [
+          "A palace was built here in the 14th century, its walls constructed from rammed earth.",
+          "Students from the University of Granada have been excavating the area of the palace for several years.",
+          "After the Carthusians acquired the land, the palace was gradually dismantled. A farmhouse was built near here c. 1520 and was in use until c. 1640."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.59365,
+          37.1948722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The palace pool",
+        "images": [
+          "img/7a.jpg",
+          "img/7b.jpg"
+        ],
+        "imagesNote": "Images of excavations and micromorphology from the palace area",
+        "radius": 10,
+        "descriptions": [
+          "The palace enclosed a central pool which was later modified by the Jesuits in the mid-19th century.",
+          "Micromorphology confirmed the location of the path and entrance route into the pool area, which was unclear at the time of excavations.",
+          "There was a short period of disuse, where sediment accumulated in a shallow puddle of water and began to form soil. Deliberate infilling of the pool took place just before 1640, and also later."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5935306,
+          37.1951556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The view across the Vega of Granada",
+        "images": [
+          "img/8.jpg"
+        ],
+        "imagesNote": "The castle of Moclin",
+        "radius": 10,
+        "descriptions": [
+          "There are few written sources relating to Aynadamar in the Nasrid period. However, it clearly offered views across the Vega of Granada, and it is possible to even say the former frontier with Castile where the castle of Moclin is situated.",
+          "“Among the most beautiful places is the land lot so-called ‘Aynadamar’. it as a hill where vegetable gardens and orchards are admired such that no other city can boast of anything similar” Ibn Battuta, ca. 1350",
+          "“(Aynadamar) is wonderfully situated, with marvellous gardens, unequalled for their mid climate, sweet waters and panoramic views. There, stand well-protected palaces, crowded mosques, sumptuous mansions, solidly-built houses and verdant myrtle groves. There, at their leisure, people happily spend their money and do not skimp on their investments – rivalling those of good fortune, sometime servants of the dynasty - until [such mansions] became wonders of the world and prototypes of beauty.” Ibn al-Jatib, ca. 1375"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5938806,
+          37.19505
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The Jesuit tower",
+        "images": [
+          "img/9.jpg"
+        ],
+        "imagesNote": "Drone image of site with tower and pool",
+        "radius": 10,
+        "descriptions": [
+          "At the end of the Early Modern period, during the 19th century, the properties of Cartuja were bought by the Society of Jesus (Jesuits) following the dissolution of the Carthusian monastery.",
+          "Up in the area of the palace, the presence of the Jesuits is represented by this tower."
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5938694,
+          37.1951306
+        ]
+      }
+    }
+  ]
+}
